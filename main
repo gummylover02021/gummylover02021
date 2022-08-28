@@ -838,7 +838,7 @@ local climbB = Instance.new("NumberValue")
 climbB.Name = "ClimbBoost"
 climbB.Value = 0
 climbB.Parent = game.Players.LocalPlayer.Character.Boosts
-local mainWin = Library:CreateWindow("Fart lineag", 400, 420, 32 )
+local mainWin = Library:CreateWindow("Fart lineag", 400, 480, 32 )
 local poop = mainWin:CreateCategory("poop fart")
 local Misc = mainWin:CreateCategory("Misclanieus")
 local setting = mainWin:CreateCategory("Setingg")
@@ -853,12 +853,12 @@ end)
 
 local nofall = poop:CreateToggle("minecraft cat Effect", false, function(State)
     if State == true then
-       fallRemote.Parent = Workspace
+       fallRemote:Destroy()
     elseif State == false then
-        fallRemote.Parent = remotes
+       -- fallRemote.Parent = remotes
     end
 end)
-local Autopickup = poop:CreateToggle("Auto Pick goodies", true, function(state)
+local Autopickup = poop:CreateToggle("Auto Pick goodies", false, function(state)
     while true do wait()
 for i,v in pairs(game.Workspace.Trinkets:GetChildren()) do 
     if v:FindFirstChild("ClickPart") and (v.Position - game.Players.LocalPlayer.Character.Torso.Position).Magnitude < 8 and state == true then
