@@ -871,6 +871,7 @@ for i,v in pairs(game.Workspace.Trinkets:GetChildren()) do
         end]]
         if state == true then
         runService:BindToRenderStep("Autopic", 201, function()
+            wait()
             for i,v in pairs(game.Workspace.Trinkets:GetChildren()) do 
              if v:FindFirstChild("ClickPart") and (v.Position - game.Players.LocalPlayer.Character.Torso.Position).Magnitude < 8 and state == true then
               fireclickdetector(v.ClickPart.ClickDetector)
