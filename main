@@ -860,15 +860,6 @@ local nofall = poop:CreateToggle("minecraft cat Effect", false, function(State)
     end
 end)
 local Autopickup = poop:CreateToggle("Auto Pick goodies", false, function(state)
-  --[[  while true do wait()
-for i,v in pairs(game.Workspace.Trinkets:GetChildren()) do 
-    if v:FindFirstChild("ClickPart") and (v.Position - game.Players.LocalPlayer.Character.Torso.Position).Magnitude < 8 and state == true then
-         fireclickdetector(v.ClickPart.ClickDetector)
-         elseif v:FindFirstChild("ClickDetector") and (v.Position - game.Players.LocalPlayer.Character.Torso.Position).Magnitude < 8 and state == true  then
-        fireclickdetector(v.ClickDetector)
-                end
-            end
-        end]]
         if state == true then
         runService:BindToRenderStep("Autopic", 201, function()
             wait()
@@ -883,6 +874,13 @@ for i,v in pairs(game.Workspace.Trinkets:GetChildren()) do
 elseif state == false then
     runService:UnbindFromRenderStep("Autopic")
 end
+end)
+local infjump = poop:CreateToggle("infinity hops", false, function(State)
+game:GetService("UserInputService").JumpRequest:connect(function()
+	if State == true then
+		game:GetService"Players".LocalPlayer.Character:FindFirstChildOfClass'Humanoid':ChangeState("Jumping")
+	end
+end)
 end)
 mainWin:Init()
 mainWin:ChangeCategory(poop)
