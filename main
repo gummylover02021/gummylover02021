@@ -855,7 +855,7 @@ gmt.__index = newcclosure(function(self, Key)
     end
     return oldIndex(self,Key)
 end)
-
+  local infj = false
 local Speed = poop:CreateSlider("speed meter", 0, 300, 0, function(Amount)
     speedB.Value = Amount
 end)
@@ -900,11 +900,16 @@ elseif state == false then
 end
 end)
 local infjump = Misc:CreateToggle("infinity hops", false, function(State)
-if State == true then
-game:GetService("UserInputService").JumpRequest:connect(function()
-		game:GetService"Players".LocalPlayer.Character:FindFirstChildOfClass'Humanoid':ChangeState("Jumping")
-	    end)
+    if State == true then
+        infj = true
+    elseif State == false then
+        infj = false
     end
+    game:GetService("UserInputService").JumpRequest:connect(function()
+        if infj then
+            game:GetService"Players".LocalPlayer.Character:FindFirstChildOfClass'Humanoid':ChangeState("Jumping")  
+        end
+    end)
 end)
 mainWin:Init()
 mainWin:ChangeCategory(poop)
