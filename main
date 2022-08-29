@@ -853,33 +853,7 @@ gmt.__index = newcclosure(function(self, Key)
     end
     return oldIndex(self,Key)
 end)
-local Val = Instance.new("NumberValue")
-Val.Value = 0
-Val.Parent = game.workspace
-player.CharacterAdded:Connect(function()
-local remotes = game.Players.LocalPlayer.Character.CharacterHandler.Remotes
-local fallRemote = remotes.ApplyFallDamage
 
-local speedB = Instance.new("NumberValue")
-speedB.Name = "SpeedBoost"
-speedB.Value = 0
-speedB.Parent = game.Players.LocalPlayer.Character.Boosts
-
-local climbB = Instance.new("NumberValue")
-climbB.Name = "ClimbBoost"
-climbB.Value = 0
-climbB.Parent = game.Players.LocalPlayer.Character.Boosts
-
-local gmt = getrawmetatable(game)
-setreadonly(gmt, false)
-local oldIndex = gmt.__index
-gmt.__index = newcclosure(function(self, Key)
-    if tostring(self) == "Humanoid" and tostring(Key) == "JumpPower" then
-        return 50
-    end
-    return oldIndex(self,Key)
-end)
-end)
 local mainWin = Library:CreateWindow("Fart lineag", 400, 420, 32 )
 local poop = mainWin:CreateCategory("poop fart")
 local Misc = mainWin:CreateCategory("Misclanieus")
@@ -895,12 +869,10 @@ local climb = poop:CreateSlider("spider minecraft speed", 0, 50, 0, function(Amo
 end)
 
 local jumpBoost = poop:CreateSlider("Potien of leaping meter", 0, 200, 0, function(Amount)
-    Val.Value = Amount
-    game.Players.LocalPlayer.Character.Humanoid.JumpPower = Val.Value
-    print("Val",Val.Value)
+    game.Players.LocalPlayer.Character.Humanoid.JumpPower = Amount
 runService:BindToRenderStep("JumpBoostt", 203, function()
         wait()
-        game.Players.LocalPlayer.Character.Humanoid.JumpPower = Val.Value
+        game.Players.LocalPlayer.Character.Humanoid.JumpPower = Amount
 end)
 end)
 
@@ -910,9 +882,6 @@ local nofall = poop:CreateToggle("minecraft cat Effect", false, function(State)
     elseif State == false then
         fallRemote.Parent = remotes
     end
-    player.CharacterAdded:Connect(function()
-        State = false
-    end)
 end)
 local Autopickup = poop:CreateToggle("Auto Pick goodies", false, function(state)
         if state == true then
@@ -944,10 +913,6 @@ local infjump = Misc:CreateToggle("infinity hops", false, function(State)
             game:GetService"Players".LocalPlayer.Character:FindFirstChildOfClass'Humanoid':ChangeState("Jumping")  
         end
     end)
-            player.CharacterAdded:Connect(function()
-            State = false
-            infj = false
-         end)
 end)
 mainWin:Init()
 mainWin:ChangeCategory(poop)
