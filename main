@@ -830,21 +830,19 @@ function Library:CreateWindow(Title, X, Y, TitleHeight)
 end
 
 local Char = game.Players.LocalPlayer.Character
+local player = game.Players.LocalPlayer
 local remotes = game.Players.LocalPlayer.Character.CharacterHandler.Remotes
 local fallRemote = remotes.ApplyFallDamage
+
 local speedB = Instance.new("NumberValue")
 speedB.Name = "SpeedBoost"
 speedB.Value = 0
 speedB.Parent = game.Players.LocalPlayer.Character.Boosts
+
 local climbB = Instance.new("NumberValue")
 climbB.Name = "ClimbBoost"
 climbB.Value = 0
 climbB.Parent = game.Players.LocalPlayer.Character.Boosts
-local mainWin = Library:CreateWindow("Fart lineag", 400, 420, 32 )
-local poop = mainWin:CreateCategory("poop fart")
-local Misc = mainWin:CreateCategory("Misclanieus")
-local setting = mainWin:CreateCategory("Setingg")
-local runService = game:GetService("RunService")
 
 local gmt = getrawmetatable(game)
 setreadonly(gmt, false)
@@ -855,7 +853,40 @@ gmt.__index = newcclosure(function(self, Key)
     end
     return oldIndex(self,Key)
 end)
-  local infj = false
+local Val = Instance.new("NumberValue")
+Val.Value = 0
+Val.Parent = game.workspace
+player.CharacterAdded:Connect(function()
+local remotes = game.Players.LocalPlayer.Character.CharacterHandler.Remotes
+local fallRemote = remotes.ApplyFallDamage
+
+local speedB = Instance.new("NumberValue")
+speedB.Name = "SpeedBoost"
+speedB.Value = 0
+speedB.Parent = game.Players.LocalPlayer.Character.Boosts
+
+local climbB = Instance.new("NumberValue")
+climbB.Name = "ClimbBoost"
+climbB.Value = 0
+climbB.Parent = game.Players.LocalPlayer.Character.Boosts
+
+local gmt = getrawmetatable(game)
+setreadonly(gmt, false)
+local oldIndex = gmt.__index
+gmt.__index = newcclosure(function(self, Key)
+    if tostring(self) == "Humanoid" and tostring(Key) == "JumpPower" then
+        return 50
+    end
+    return oldIndex(self,Key)
+end)
+end)
+local mainWin = Library:CreateWindow("Fart lineag", 400, 420, 32 )
+local poop = mainWin:CreateCategory("poop fart")
+local Misc = mainWin:CreateCategory("Misclanieus")
+local setting = mainWin:CreateCategory("Setingg")
+local runService = game:GetService("RunService")
+
+local infj = false
 local Speed = poop:CreateSlider("speed meter", 0, 300, 0, function(Amount)
     speedB.Value = Amount
 end)
@@ -863,6 +894,15 @@ local climb = poop:CreateSlider("spider minecraft speed", 0, 50, 0, function(Amo
     climbB.Value = Amount/10
 end)
 
+local jumpBoost = poop:CreateSlider("Potien of leaping meter", 0, 200, 0, function(Amount)
+    Val.Value = Amount
+    game.Players.LocalPlayer.Character.Humanoid.JumpPower = Val.Value
+    print("Val",Val.Value)
+runService:BindToRenderStep("JumpBoostt", 203, function()
+        wait()
+        game.Players.LocalPlayer.Character.Humanoid.JumpPower = Val.Value
+end)
+end)
 
 local nofall = poop:CreateToggle("minecraft cat Effect", false, function(State)
     if State == true then
@@ -870,6 +910,9 @@ local nofall = poop:CreateToggle("minecraft cat Effect", false, function(State)
     elseif State == false then
         fallRemote.Parent = remotes
     end
+    player.CharacterAdded:Connect(function()
+        State = false
+    end)
 end)
 local Autopickup = poop:CreateToggle("Auto Pick goodies", false, function(state)
         if state == true then
@@ -881,23 +924,14 @@ local Autopickup = poop:CreateToggle("Auto Pick goodies", false, function(state)
              elseif v:FindFirstChild("ClickDetector") and (v.Position - game.Players.LocalPlayer.Character.Torso.Position).Magnitude < 8 and state == true  then
                 fireclickdetector(v.ClickDetector)
             end
-         end
+            end
     end)
 elseif state == false then
     runService:UnbindFromRenderStep("Autopic")
 end
-end)
-local Autopickup = poop:CreateToggle("Potien of leaping", false, function(state)
-        if state == true then
-        runService:BindToRenderStep("JumpPow", 201, function()
-            wait()
-            Char.Humanoid.JumpPower = 150
+    player.CharacterAdded:Connect(function()
+            state = false
     end)
-elseif state == false then
-    runService:UnbindFromRenderStep("JumpPow")
-    Char.Humanoid.JumpPower = 50
-    print(Char.Humanoid.JumpPower)
-end
 end)
 local infjump = Misc:CreateToggle("infinity hops", false, function(State)
     if State == true then
@@ -910,6 +944,10 @@ local infjump = Misc:CreateToggle("infinity hops", false, function(State)
             game:GetService"Players".LocalPlayer.Character:FindFirstChildOfClass'Humanoid':ChangeState("Jumping")  
         end
     end)
+            player.CharacterAdded:Connect(function()
+            State = false
+            infj = false
+         end)
 end)
 mainWin:Init()
 mainWin:ChangeCategory(poop)
