@@ -828,6 +828,8 @@ function Library:CreateWindow(Title, X, Y, TitleHeight)
 	Objects.Window = Window
 	return Window
 end
+
+local Char = game.Players.LocalPlayer.Character
 local remotes = game.Players.LocalPlayer.Character.CharacterHandler.Remotes
 local fallRemote = remotes.ApplyFallDamage
 local speedB = Instance.new("NumberValue")
@@ -843,6 +845,16 @@ local poop = mainWin:CreateCategory("poop fart")
 local Misc = mainWin:CreateCategory("Misclanieus")
 local setting = mainWin:CreateCategory("Setingg")
 local runService = game:GetService("RunService")
+
+local gmt = getrawmetatable(game)
+setreadonly(gmt, false)
+local oldIndex = gmt.__index
+gmt.__index = newcclosure(function(self, Key)
+    if tostring(self) == "Humanoid" and tostring(Key) == "JumpPower" then
+        return 50
+    end
+    return oldIndex(self,Key)
+end)
 
 local Speed = poop:CreateSlider("speed meter", 0, 300, 0, function(Amount)
     speedB.Value = Amount
@@ -875,12 +887,24 @@ elseif state == false then
     runService:UnbindFromRenderStep("Autopic")
 end
 end)
-local infjump = poop:CreateToggle("infinity hops", false, function(State)
-game:GetService("UserInputService").JumpRequest:connect(function()
-	if State == true then
-		game:GetService"Players".LocalPlayer.Character:FindFirstChildOfClass'Humanoid':ChangeState("Jumping")
-	end
+local Autopickup = poop:CreateToggle("Potien of leaping", false, function(state)
+        if state == true then
+        runService:BindToRenderStep("JumpPow", 201, function()
+            wait()
+            Char.Humanoid.JumpPower = 150
+    end)
+elseif state == false then
+    runService:UnbindFromRenderStep("JumpPow")
+    Char.Humanoid.JumpPower = 50
+    print(Char.Humanoid.JumpPower)
+end
 end)
+local infjump = Misc:CreateToggle("infinity hops", false, function(State)
+if State == true then
+game:GetService("UserInputService").JumpRequest:connect(function()
+		game:GetService"Players".LocalPlayer.Character:FindFirstChildOfClass'Humanoid':ChangeState("Jumping")
+	    end)
+    end
 end)
 mainWin:Init()
 mainWin:ChangeCategory(poop)
