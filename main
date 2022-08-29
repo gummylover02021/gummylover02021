@@ -868,13 +868,13 @@ local climb = poop:CreateSlider("spider minecraft speed", 0, 50, 0, function(Amo
     climbB.Value = Amount/10
 end)
 
-local jumpBoost = poop:CreateSlider("Potien of leaping meter", 0, 200, 0, function(Amount)
+--[[local jumpBoost = poop:CreateSlider("Potien of leaping meter", 0, 200, 0, function(Amount)
     game.Players.LocalPlayer.Character.Humanoid.JumpPower = Amount
 runService:BindToRenderStep("JumpBoostt", 203, function()
         wait()
         game.Players.LocalPlayer.Character.Humanoid.JumpPower = Amount
 end)
-end)
+end)]]--
 
 local nofall = poop:CreateToggle("minecraft cat Effect", false, function(State)
     if State == true then
@@ -902,7 +902,7 @@ end
             state = false
     end)
 end)
-local infjump = Misc:CreateToggle("infinity hops", false, function(State)
+--[[local infjump = Misc:CreateToggle("infinity hops", false, function(State)
     if State == true then
         infj = true
     elseif State == false then
@@ -913,6 +913,6 @@ local infjump = Misc:CreateToggle("infinity hops", false, function(State)
             game:GetService"Players".LocalPlayer.Character:FindFirstChildOfClass'Humanoid':ChangeState("Jumping")  
         end
     end)
-end)
+end)]]--
 mainWin:Init()
 mainWin:ChangeCategory(poop)
