@@ -886,7 +886,6 @@ end)
 local Autopickup = poop:CreateToggle("Auto Pick goodies", false, function(state)
         if state == true then
         runService:BindToRenderStep("Autopic", 201, function()
-            wait()
             for i,v in pairs(game.Workspace.Trinkets:GetChildren()) do 
              if v:FindFirstChild("ClickPart") and (v.Position - game.Players.LocalPlayer.Character.Torso.Position).Magnitude < 8 and state == true then
               fireclickdetector(v.ClickPart.ClickDetector)
@@ -902,7 +901,7 @@ end
             state = false
     end)
 end)
---[[local infjump = Misc:CreateToggle("infinity hops", false, function(State)
+local infjump = Misc:CreateToggle("infinity hops", false, function(State)
     if State == true then
         infj = true
     elseif State == false then
@@ -913,6 +912,6 @@ end)
             game:GetService"Players".LocalPlayer.Character:FindFirstChildOfClass'Humanoid':ChangeState("Jumping")  
         end
     end)
-end)]]--
+end)
 mainWin:Init()
 mainWin:ChangeCategory(poop)
